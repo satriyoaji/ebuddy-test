@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@config/*": ["config/*"],
+      "@core/*": ["core/*"],
+      "@controller/*": ["controller/*"],
+      "@middleware/*": ["middleware/*"],
+      "@repository/*": ["repository/*"],
+      "@routes/*": ["routes/*"],
+      "@entities/*": ["entities/*"]
+    },
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  }
+}
