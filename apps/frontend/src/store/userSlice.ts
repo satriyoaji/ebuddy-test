@@ -1,12 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "@repo/shared"; // Adjust based on monorepo import path
 
 interface UserState {
-    user: {
-        uid: string;
-        email: string;
-        displayName: string;
-        photoURL: string;
-    } | null;
+    user: User | null;
     loading: boolean;
     error: string | null;
 }
@@ -21,18 +17,13 @@ const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        setUser: (state, action: PayloadAction<UserState["user"]>) => {
+        setUser: (state, action: PayloadAction<User>) => {
             state.user = action.payload;
-            state.error = null; // Reset error on successful login
         },
-        updateUser: (state, action: PayloadAction<{ displayName: string; photoURL: string }>) => {
+        updateUser: (state, action: PayloadAction<User>) => {
             if (state.user) {
-                state.user.displayName = action.payload.displayName;
-                state.user.photoURL = action.payload.photoURL;
+                state.user = { ...state.user, ...action.payload };
             }
-        },
-        logout: (state) => {
-            state.user = null;
         },
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
@@ -40,8 +31,11 @@ const userSlice = createSlice({
         setError: (state, action: PayloadAction<string | null>) => {
             state.error = action.payload;
         },
+        clearUser: (state) => {
+            state.user = null;
+        },
     },
 });
 
-export const { setUser, updateUser, logout, setLoading, setError } = userSlice.actions;
+export const { setUser, updateUser, setLoading, setError, clearUser } = userSlice.actions;
 export default userSlice.reducer;

@@ -4,11 +4,17 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { TextField, Box, Typography, Stack } from "@mui/material";
 import UpdateButton from "@/components/molecules/UpdateButton";
+import { User } from "@repo/shared"; // Adjust based on monorepo import path
 
 export default function UpdateUserForm() {
-    const user = useSelector((state: RootState) => state.user.user);
-    const [displayName, setDisplayName] = useState(user?.displayName || "");
-    const [photoURL, setPhotoURL] = useState(user?.photoURL || "");
+    const user = useSelector((state: RootState) => state.user.user) as User;
+    const [updatedUser, setUpdatedUser] = useState<User>({
+        id: user?.id || "",
+        name: user?.name || "",
+        email: user?.email || "",
+        age: user?.age || 0,
+        photoURL: user?.photoURL || "",
+    });
 
     return (
         <Box sx={{ maxWidth: 400, margin: "auto", p: 3, boxShadow: 2, borderRadius: 2 }}>
@@ -18,20 +24,28 @@ export default function UpdateUserForm() {
 
             <Stack spacing={2}>
                 <TextField
-                    label="Display Name"
+                    label="Name"
                     variant="outlined"
                     fullWidth
-                    value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
+                    value={updatedUser.name}
+                    onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
                 />
                 <TextField
-                    label="Photo URL"
+                    label="Email"
                     variant="outlined"
                     fullWidth
-                    value={photoURL}
-                    onChange={(e) => setPhotoURL(e.target.value)}
+                    value={updatedUser.email}
+                    disabled // Email should not be editable
                 />
-                <UpdateButton displayName={displayName} photoURL={photoURL} />
+                <TextField
+                    label="Age"
+                    variant="outlined"
+                    fullWidth
+                    type="number"
+                    value={updatedUser.age}
+                    onChange={(e) => setUpdatedUser({ ...updatedUser, age: Number(e.target.value) })}
+                />
+                <UpdateButton user={updatedUser} />
             </Stack>
         </Box>
     );

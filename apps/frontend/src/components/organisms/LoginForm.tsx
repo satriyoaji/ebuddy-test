@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/apis/firebaseConfig";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/store/userSlice";
+import { User } from "@repo/shared"; // Import shared User type
 import { TextField, Button, Box, Typography } from "@mui/material";
 
 export default function LoginForm() {
@@ -13,18 +14,21 @@ export default function LoginForm() {
     const [error, setError] = useState<string | null>(null);
 
     const handleLogin = async () => {
-        setError(null); // Clear previous errors
+        setError(null);
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
+            const firebaseUser = userCredential.user;
 
-            // Ensure email is always a string (convert null to empty string)
-            dispatch(setUser({
-                uid: user.uid,
-                email: user.email ?? "", // Fix: Convert `null` to `""`
-                displayName: user.displayName ?? "",
-                photoURL: user.photoURL ?? "",
-            }));
+            // Construct a User object based on the shared structure
+            const user: User = {
+                id: firebaseUser.uid,
+                name: firebaseUser.displayName ?? "No Name",
+                email: firebaseUser.email ?? "", // Ensure non-null
+                photoURL: firebaseUser.photoURL ?? "", // Ensure non-null
+                age: 18, // Default value (update as needed)
+            };
+
+            dispatch(setUser(user));
         } catch (error: any) {
             console.error("Login failed:", error);
             setError(error.message || "Login failed");

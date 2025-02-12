@@ -4,13 +4,13 @@ import { Button, CircularProgress } from "@mui/material";
 import { updateUserProfile } from "@/apis/userApi";
 import { useDispatch } from "react-redux";
 import { updateUser, setLoading, setError } from "@/store/userSlice";
+import { User } from "@repo/shared";
 
 interface UpdateButtonProps {
-    displayName: string;
-    photoURL: string;
+    user: User;
 }
 
-export default function UpdateButton({ displayName, photoURL }: UpdateButtonProps) {
+export default function UpdateButton({ user }: UpdateButtonProps) {
     const dispatch = useDispatch();
     const [loading, setLoadingState] = useState(false);
 
@@ -19,7 +19,7 @@ export default function UpdateButton({ displayName, photoURL }: UpdateButtonProp
         dispatch(setLoading(true));
 
         try {
-            const updatedUser = await updateUserProfile(displayName, photoURL);
+            const updatedUser = await updateUserProfile(user);
             dispatch(updateUser(updatedUser));
             dispatch(setError(null));
         } catch (err: any) {

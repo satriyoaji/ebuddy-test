@@ -1,11 +1,7 @@
 import { getAuth, updateProfile } from "firebase/auth";
+import { User } from "@repo/shared"; // Adjust import path based on your monorepo structure
 
-export interface UserProfile {
-    displayName: string;
-    photoURL: string;
-}
-
-export const updateUserProfile = async (displayName: string, photoURL: string): Promise<UserProfile> => {
+export const updateUserProfile = async (updatedUser: User): Promise<User> => {
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -13,10 +9,16 @@ export const updateUserProfile = async (displayName: string, photoURL: string): 
         throw new Error("User not authenticated");
     }
 
-    await updateProfile(user, { displayName, photoURL });
+    await updateProfile(user, {
+        displayName: updatedUser.name,
+        photoURL: "", // Assuming no photoURL in shared User model, modify if needed
+    });
 
     return {
-        displayName: user.displayName || "",
-        photoURL: user.photoURL || "",
+        id: user.uid,
+        name: user.displayName || updatedUser.name,
+        email: user.email || updatedUser.email,
+        photoURL: user.photoURL || updatedUser.photoURL,
+        age: updatedUser.age, // Assuming age is coming from the shared User model
     };
 };
