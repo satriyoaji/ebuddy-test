@@ -1,5 +1,5 @@
 import { db } from '@config/firebaseConfig';
-import { User } from '@entities/user';
+import { User } from "@repo/shared";
 import {Constant} from "../utils/constants";
 
 const USERS_COLLECTION = Constant.USER_COLLECTION;
