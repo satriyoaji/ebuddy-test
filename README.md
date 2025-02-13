@@ -13,7 +13,7 @@ This repository is a monorepo using Turborepo that contains both the **frontend*
 ## Prerequisites
 Before setting up the project, ensure you have:
 - **Node.js** (>= 18)
-- **pnpm** (or npm/yarn, but pnpm is recommended for monorepos)
+- **npm** (or npm/yarn, but npm is recommended for monorepos)
 - **Firebase CLI** (for running Firebase functions locally)
 - **Google Firebase Project** (for authentication and Firestore database)
 
@@ -26,7 +26,7 @@ cd ebuddy-test
 
 ### 2. Install Dependencies
 ```sh
-pnpm install  # or npm install / yarn install
+npm install  # or npm install / yarn install
 ```
 
 ### 3. Set Up Firebase
@@ -68,19 +68,19 @@ firebase emulators:start --only functions,firestore,auth
 ### 5. Run Backend & Frontend
 In the root directory, start both services using Turborepo:
 ```sh
-pnpm turbo run dev
+npm turbo run dev
 ```
 Alternatively, you can start each service individually:
 
 #### Start Backend
 ```sh
 cd apps/backend
-pnpm run dev
+npm run dev
 ```
 #### Start Frontend
 ```sh
 cd apps/frontend
-pnpm run dev
+npm run dev
 ```
 
 The frontend will be available at `http://localhost:3000` and the backend will run on `http://localhost:5000`.
@@ -188,7 +188,7 @@ The backend API routes are defined in `apps/backend/routes/`. Below is the API d
 The frontend can be deployed to Vercel, Netlify, or Firebase Hosting. To build the project:
 ```sh
 cd apps/frontend
-pnpm run build
+npm run build
 ```
 Then deploy using your preferred platform.
 
